@@ -137,3 +137,46 @@ graph TD
    AdminSvc --> AdminKafka
    AdminSvc --> ReportGen
 ```
+
+### Online Shop System - Deployment Diagram
+
+This diagram shows how the system is deployed using Docker Compose.
+
+```mermaid
+graph TD
+    subgraph "Docker-Compose"
+        subgraph "Application Level"
+            WebApp["Svelte Frontend<br/>[Docker Container]"]
+            APIGateway["API Gateway<br/>[Docker Container]"]
+            UserService["User Service<br/>[Docker Container]"]
+            ProductService["Product Service<br/>[Docker Container]"]
+            OrderService["Order Service<br/>[Docker Container]"]
+            AdminService["Admin Service<br/>[Docker Container]"]
+        end
+        
+        subgraph "Infrastructure Level"
+            PostgreSQL["PostgreSQL<br/>[Docker Container]"]
+            Redis["Redis<br/>[Docker Container]"]
+            Kafka["Kafka + Zookeeper<br/>[Docker Containers]"]
+            FileStorage["MinIO/Volume<br/>[Docker Container/Volume]"]
+        end
+    end
+    
+    WebApp --> APIGateway
+    APIGateway --> UserService
+    APIGateway --> ProductService
+    APIGateway --> OrderService
+    APIGateway --> AdminService
+    
+    UserService --> PostgreSQL
+    UserService --> Redis
+    ProductService --> PostgreSQL
+    ProductService --> FileStorage
+    OrderService --> PostgreSQL
+    AdminService --> PostgreSQL
+    
+    UserService --> Kafka
+    ProductService --> Kafka
+    OrderService --> Kafka
+    AdminService --> Kafka
+```
