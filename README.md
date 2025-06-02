@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/1c04a38b-b223-4e6b-a874-5bf4a88a8510)# C4 Architecture Documentation – Online Shop System
+# C4 Architecture Documentation – Online Shop System
 
 ### Online Shop System - Context Diagram
 
