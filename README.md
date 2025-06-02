@@ -191,7 +191,7 @@ graph TD
 
 ### User Service
 
-# ERDs - Online Shop System
+# Component ERDs - Online Shop System
 
 ### Order Service
 
