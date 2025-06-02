@@ -10,7 +10,7 @@ servers:
   kafkaBroker:
     url: localhost:9092
     protocol: kafka
-    description: Local Kafka broker for messaging
+    description: Local Kafka broker
 
 channels:
   user.registered:
