@@ -188,6 +188,8 @@ graph TD
 
 ## Order Service
 
+#### AsyncAPI
+
 - [AsyncAPI](https://studio.asyncapi.com/?share=78d68da1-58e4-4386-ad0d-d6817340d4cd)
 - [AsyncApi/OrderService.yaml](https://github.com/danieldan0/microservice-store/blob/main/AsyncApi/OrderService.yaml)
 
