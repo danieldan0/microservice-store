@@ -1,0 +1,69 @@
+asyncapi: '2.6.0'
+info:
+  title: Admin Service AsyncAPI
+  version: '1.0.0'
+  description: |
+    AsyncAPI spec for Admin Service, handling system administration and reports.
+servers:
+  kafkaBroker:
+    url: localhost:9092
+    protocol: kafka
+    description: Local Kafka broker
+
+channels:
+  report.generated:
+    description: Event emitted when a new system report is generated
+    publish:
+      summary: Report generation event
+      operationId: reportGenerated
+      message:
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            reportId:
+              type: integer
+            reportType:
+              type: string
+              description: Type of the report (e.g. sales, user activity)
+            generatedAt:
+              type: string
+              format: date-time
+            summary:
+              type: string
+          required: [reportId, reportType, generatedAt]
+
+  user.alert:
+    description: Event emitted to notify admin of critical user-related alerts
+    publish:
+      summary: User alert event
+      operationId: userAlert
+      message:
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            alertId:
+              type: integer
+            userId:
+              type: integer
+            alertType:
+              type: string
+              description: Type of alert (e.g. suspicious activity)
+            details:
+              type: string
+            createdAt:
+              type: string
+              format: date-time
+          required: [alertId, userId, alertType, createdAt]
+
+components:
+  messages:
+    ReportGeneratedMessage:
+      contentType: application/json
+      payload:
+        $ref: '#/channels/report.generated/publish/message/payload'
+    UserAlertMessage:
+      contentType: application/json
+      payload:
+        $ref: '#/channels/user.alert/publish/message/payload'

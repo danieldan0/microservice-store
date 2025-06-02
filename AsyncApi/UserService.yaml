@@ -1,0 +1,129 @@
+asyncapi: '2.6.0'
+info:
+  title: User Service AsyncAPI
+  version: '1.0.0'
+  description: |
+    This AsyncAPI document describes the asynchronous messaging interface
+    for the User Service, which manages authentication, user registration,
+    profile updates, and emits events about user changes.
+servers:
+  kafkaBroker:
+    url: localhost:9092
+    protocol: kafka
+    description: Local Kafka broker for messaging
+
+channels:
+  user.registered:
+    description: Channel for user registration events
+    publish:
+      summary: Event emitted when a new user registers
+      operationId: userRegistered
+      message:
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            userId:
+              type: integer
+              description: Unique user ID
+            username:
+              type: string
+              description: Username of the registered user
+            email:
+              type: string
+              format: email
+              description: Email address of the user
+            role:
+              type: string
+              enum: [user, admin]
+              description: Role assigned to the user
+            createdAt:
+              type: string
+              format: date-time
+              description: Registration timestamp
+          required:
+            - userId
+            - username
+            - email
+            - role
+            - createdAt
+
+  user.updated:
+    description: Channel for user profile update events
+    publish:
+      summary: Event emitted when a user updates profile information
+      operationId: userUpdated
+      message:
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            userId:
+              type: integer
+              description: Unique user ID
+            updatedFields:
+              type: object
+              description: Fields updated with new values
+            updatedAt:
+              type: string
+              format: date-time
+              description: Timestamp of the update
+          required:
+            - userId
+            - updatedFields
+            - updatedAt
+
+  user.deleted:
+    description: Channel for user deletion events
+    publish:
+      summary: Event emitted when a user is deleted or deactivated
+      operationId: userDeleted
+      message:
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            userId:
+              type: integer
+              description: Unique user ID
+            deletedAt:
+              type: string
+              format: date-time
+              description: Timestamp of deletion or deactivation
+          required:
+            - userId
+            - deletedAt
+
+components:
+  messages:
+    UserRegisteredMessage:
+      contentType: application/json
+      payload:
+        $ref: '#/channels/user.registered/publish/message/payload'
+    UserUpdatedMessage:
+      contentType: application/json
+      payload:
+        $ref: '#/channels/user.updated/publish/message/payload'
+    UserDeletedMessage:
+      contentType: application/json
+      payload:
+        $ref: '#/channels/user.deleted/publish/message/payload'
+
+  schemas:
+    User:
+      type: object
+      properties:
+        userId:
+          type: integer
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+          enum: [user, admin]
+        createdAt:
+          type: string
+          format: date-time
+

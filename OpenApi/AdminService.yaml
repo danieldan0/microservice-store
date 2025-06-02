@@ -1,0 +1,144 @@
+openapi: 3.0.3
+info:
+  title: Admin Service API
+  version: 1.0.0
+  description: API for system administration and management in the Online Shop System
+
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+
+paths:
+  /admins:
+    get:
+      summary: Get list of all admin users
+      tags:
+        - Admin
+      responses:
+        '200':
+          description: List of admins
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Admin'
+
+  /admins/{admin_id}:
+    get:
+      summary: Get admin details by ID
+      tags:
+        - Admin
+      parameters:
+        - name: admin_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Admin user details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Admin'
+        '404':
+          description: Admin not found
+    put:
+      summary: Update admin user data
+      tags:
+        - Admin
+      parameters:
+        - name: admin_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Admin update payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminUpdate'
+      responses:
+        '200':
+          description: Admin updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Admin'
+        '404':
+          description: Admin not found
+    delete:
+      summary: Delete an admin user by ID
+      tags:
+        - Admin
+      parameters:
+        - name: admin_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Admin deleted successfully
+        '404':
+          description: Admin not found
+
+  /reports:
+    get:
+      summary: Generate system reports
+      tags:
+        - Reports
+      parameters:
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [sales, users, products]
+          description: Type of report to generate
+      responses:
+        '200':
+          description: Report data
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Invalid report type
+
+components:
+  schemas:
+    Admin:
+      type: object
+      properties:
+        admin_id:
+          type: integer
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        roles:
+          type: array
+          items:
+            type: string
+      required:
+        - admin_id
+        - username
+        - email
+
+    AdminUpdate:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        roles:
+          type: array
+          items:
+            type: string
+      required: []

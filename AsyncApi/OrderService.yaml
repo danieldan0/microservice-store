@@ -1,0 +1,74 @@
+asyncapi: '2.6.0'
+info:
+  title: Order Service AsyncAPI
+  version: '1.0.0'
+  description: |
+    AsyncAPI spec for Order Service handling orders and carts.
+servers:
+  kafkaBroker:
+    url: localhost:9092
+    protocol: kafka
+    description: Local Kafka broker
+
+channels:
+  order.placed:
+    description: Event emitted when a new order is placed
+    publish:
+      summary: New order placed event
+      operationId: orderPlaced
+      message:
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            orderId:
+              type: integer
+            userId:
+              type: integer
+            items:
+              type: array
+              items:
+                type: object
+                properties:
+                  productId:
+                    type: integer
+                  quantity:
+                    type: integer
+            totalPrice:
+              type: number
+              format: float
+            placedAt:
+              type: string
+              format: date-time
+          required: [orderId, userId, items, totalPrice, placedAt]
+
+  order.status.updated:
+    description: Event emitted when order status is updated
+    publish:
+      summary: Order status update event
+      operationId: orderStatusUpdated
+      message:
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            orderId:
+              type: integer
+            status:
+              type: string
+              enum: [pending, processing, shipped, delivered, cancelled]
+            updatedAt:
+              type: string
+              format: date-time
+          required: [orderId, status, updatedAt]
+
+components:
+  messages:
+    OrderPlacedMessage:
+      contentType: application/json
+      payload:
+        $ref: '#/channels/order.placed/publish/message/payload'
+    OrderStatusUpdatedMessage:
+      contentType: application/json
+      payload:
+        $ref: '#/channels/order.status.updated/publish/message/payload'

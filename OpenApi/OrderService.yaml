@@ -1,0 +1,248 @@
+openapi: 3.0.3
+info:
+  title: Order Service API
+  version: 1.0.0
+  description: API for managing orders and order items in the Online Shop System
+
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+
+paths:
+  /orders:
+    get:
+      summary: Get all orders for the authenticated user
+      tags:
+        - Orders
+      responses:
+        '200':
+          description: List of orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+    post:
+      summary: Create a new order
+      tags:
+        - Orders
+      requestBody:
+        description: Order creation payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewOrder'
+      responses:
+        '201':
+          description: Order created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+
+  /orders/{order_id}:
+    get:
+      summary: Get order details by ID
+      tags:
+        - Orders
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          description: ID of the order
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Order details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '404':
+          description: Order not found
+    put:
+      summary: Update order status
+      tags:
+        - Orders
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Status update payload
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [pending, paid, shipped, delivered, canceled]
+      responses:
+        '200':
+          description: Order status updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '404':
+          description: Order not found
+    delete:
+      summary: Cancel order by ID
+      tags:
+        - Orders
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Order canceled successfully
+        '404':
+          description: Order not found
+
+  /orders/{order_id}/items:
+    get:
+      summary: Get order items for a specific order
+      tags:
+        - Order Items
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of order items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderItem'
+        '404':
+          description: Order not found
+    post:
+      summary: Add an item to an order
+      tags:
+        - Order Items
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Order item payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewOrderItem'
+      responses:
+        '201':
+          description: Order item added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderItem'
+        '404':
+          description: Order not found
+
+components:
+  schemas:
+    Order:
+      type: object
+      properties:
+        order_id:
+          type: integer
+        user_id:
+          type: integer
+        order_date:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [pending, paid, shipped, delivered, canceled]
+        total_price:
+          type: number
+          format: decimal
+        payment_method:
+          type: string
+          enum: [card, cash]
+        shipping_method:
+          type: string
+        shipping_address_id:
+          type: integer
+        tracking_number:
+          type: string
+      required:
+        - order_id
+        - user_id
+        - order_date
+        - status
+        - total_price
+
+    NewOrder:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        payment_method:
+          type: string
+          enum: [card, cash]
+        shipping_method:
+          type: string
+        shipping_address_id:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/NewOrderItem'
+      required:
+        - user_id
+        - payment_method
+        - shipping_method
+        - shipping_address_id
+        - items
+
+    OrderItem:
+      type: object
+      properties:
+        order_item_id:
+          type: integer
+        order_id:
+          type: integer
+        product_id:
+          type: integer
+        quantity:
+          type: integer
+        price_per_item:
+          type: number
+          format: decimal
+      required:
+        - order_item_id
+        - order_id
+        - product_id
+        - quantity
+        - price_per_item
+
+    NewOrderItem:
+      type: object
+      properties:
+        product_id:
+          type: integer
+        quantity:
+          type: integer
+      required:
+        - product_id
+        - quantity

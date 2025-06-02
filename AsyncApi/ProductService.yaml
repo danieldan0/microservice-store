@@ -1,0 +1,97 @@
+asyncapi: '2.6.0'
+info:
+  title: Product Service AsyncAPI
+  version: '1.0.0'
+  description: |
+    AsyncAPI spec for Product Service managing products, categories, and reviews.
+servers:
+  kafkaBroker:
+    url: localhost:9092
+    protocol: kafka
+    description: Local Kafka broker
+
+channels:
+  product.created:
+    description: Event emitted when a new product is created
+    publish:
+      summary: Product creation event
+      operationId: productCreated
+      message:
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            productId:
+              type: integer
+            name:
+              type: string
+            categoryId:
+              type: integer
+            price:
+              type: number
+              format: float
+            createdAt:
+              type: string
+              format: date-time
+          required: [productId, name, categoryId, price, createdAt]
+
+  product.updated:
+    description: Event emitted when product details are updated
+    publish:
+      summary: Product update event
+      operationId: productUpdated
+      message:
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            productId:
+              type: integer
+            updatedFields:
+              type: object
+            updatedAt:
+              type: string
+              format: date-time
+          required: [productId, updatedFields, updatedAt]
+
+  review.added:
+    description: Event emitted when a new review is added for a product
+    publish:
+      summary: New product review event
+      operationId: reviewAdded
+      message:
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            reviewId:
+              type: integer
+            productId:
+              type: integer
+            userId:
+              type: integer
+            rating:
+              type: integer
+              minimum: 1
+              maximum: 5
+            comment:
+              type: string
+            createdAt:
+              type: string
+              format: date-time
+          required: [reviewId, productId, userId, rating, createdAt]
+
+components:
+  messages:
+    ProductCreatedMessage:
+      contentType: application/json
+      payload:
+        $ref: '#/channels/product.created/publish/message/payload'
+    ProductUpdatedMessage:
+      contentType: application/json
+      payload:
+        $ref: '#/channels/product.updated/publish/message/payload'
+    ReviewAddedMessage:
+      contentType: application/json
+      payload:
+        $ref: '#/channels/review.added/publish/message/payload'
