@@ -185,11 +185,23 @@ graph TD
 
 ### Admin Service
 
+
 ### Order Service
 
 ### Product Service
 
 ### User Service
+
+#### AsyncAPI
+
+- [AsyncAPI](https://studio.asyncapi.com/?share=695c581f-8238-4d0a-869f-310e46a6a9d6)
+- [AsyncApi/UserService.yaml](https://github.com/danieldan0/microservice-store/blob/main/AsyncApi/UserService.yaml)
+
+#### OpenAPI
+
+- [OpenApi/UserService.yaml](https://github.com/danieldan0/microservice-store/blob/main/OpenApi/UserService.yaml)
+
+![image](https://github.com/user-attachments/assets/1388b587-a4c0-4663-97a1-23cae67b98d0)
 
 # Component ERDs - Online Shop System
 
