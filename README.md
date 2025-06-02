@@ -185,6 +185,16 @@ graph TD
 
 ## Admin Service
 
+#### AsyncAPI
+
+- [AsyncAPI](https://studio.asyncapi.com/?share=644f05d1-56ba-4882-9b07-e10ee7b22e7d)
+- [AsyncApi/AdminService.yaml](https://github.com/danieldan0/microservice-store/blob/main/AsyncApi/AdminService.yaml)
+
+#### OpenAPI
+
+- [OpenApi/AdminService.yaml](https://github.com/danieldan0/microservice-store/blob/main/OpenApi/AdminService.yaml)
+
+![image](https://github.com/user-attachments/assets/45014a91-c2b6-4105-ad42-c06c0233ad72)
 
 ## Order Service
 
