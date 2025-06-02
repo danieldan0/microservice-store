@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/659b1f87-3b9d-4437-ba88-5c3bdfc8f3e7)# C4 Architecture Documentation – Online Shop System
+# C4 Architecture Documentation – Online Shop System
 
 ### Online Shop System - Context Diagram
 
@@ -194,6 +194,8 @@ graph TD
 # ERDs - Online Shop System
 
 ### Order Service
+
+![image](https://github.com/user-attachments/assets/fac2cd9c-76be-49fb-b520-aa4ecebd7df6)
 
 ### Product Service
 
