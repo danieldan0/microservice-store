@@ -183,14 +183,25 @@ graph TD
 
 # Behaviors – Online Shop System
 
-### Admin Service
+## Admin Service
 
 
-### Order Service
+## Order Service
 
-### Product Service
+## Product Service
 
-### User Service
+#### AsyncAPI
+
+- [AsyncAPI](https://studio.asyncapi.com/?share=11d92e5c-03c6-430e-a0a9-2ce09cb26d55)
+- [AsyncApi/ProductService.yaml](https://github.com/danieldan0/microservice-store/blob/main/AsyncApi/ProductService.yaml)
+
+#### OpenAPI
+
+- [OpenApi/ProductService.yaml](https://github.com/danieldan0/microservice-store/blob/main/OpenApi/ProductService.yaml)
+
+![image](https://github.com/user-attachments/assets/78996bb1-43bb-4e25-9261-388f9783ef08)
+
+## User Service
 
 #### AsyncAPI
 
