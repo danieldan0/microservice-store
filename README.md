@@ -180,3 +180,13 @@ graph TD
     OrderService --> Kafka
     AdminService --> Kafka
 ```
+
+# Behaviors – Online Shop System
+
+### Admin Service
+
+### Order Service
+
+### Product Service
+
+### User Service
