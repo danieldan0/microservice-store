@@ -4,11 +4,23 @@
   import Counter from './lib/Counter.svelte'
 
   let message = '';
+  let products: any[] = [];
 
   async function fetchHealth() {
     const res = await fetch('/api/health');
     message = await res.text();
   }
+
+  async function fetchProducts() {
+    const res = await fetch('/api/products');
+    if (res.ok) {
+      products = await res.json();
+    } else {
+      products = [];
+    }
+  }
+
+  fetchProducts();
 </script>
 
 <main>
@@ -28,6 +40,19 @@
   <div class="card">
     <Counter />
   </div>
+
+  <h2>Products</h2>
+  {#if products.length > 0}
+    <ul>
+      {#each products as product}
+        <li>
+          <strong>{product.name}</strong> - {product.description}
+        </li>
+      {/each}
+    </ul>
+  {:else}
+    <p>No products found.</p>
+  {/if}
 
   <p>
     Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!

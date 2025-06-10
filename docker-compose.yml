@@ -4,7 +4,7 @@ services:
   api-gateway:
     build: ./api-gateway
     ports:
-      - "8080:8080"
+      - "8080:80"
     depends_on:
       - user-service
       - product-service
@@ -14,7 +14,7 @@ services:
   user-service:
     build: ./user-service
     ports:
-      - "5001:5001"
+      - "5001:80"
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
     depends_on:
@@ -23,7 +23,7 @@ services:
   product-service:
     build: ./product-service
     ports:
-      - "5002:5002"
+      - "5002:80"
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
     depends_on:
@@ -32,7 +32,7 @@ services:
   order-service:
     build: ./order-service
     ports:
-      - "5003:5003"
+      - "5003:80"
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
     depends_on:
@@ -41,7 +41,7 @@ services:
   admin-service:
     build: ./admin-service
     ports:
-      - "5004:5004"
+      - "5004:80"
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
     depends_on:
