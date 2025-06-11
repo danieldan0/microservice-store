@@ -5,6 +5,17 @@
 
   let message = '';
   let products: any[] = [];
+  let newProduct = {
+    name: '',
+    description: '',
+    price: 0,
+    stock_quantity: 0,
+    category_id: null,
+    brand_id: null,
+    is_active: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  };
 
   async function fetchHealth() {
     const res = await fetch('/api/health');
@@ -17,6 +28,44 @@
       products = await res.json();
     } else {
       products = [];
+    }
+  }
+
+  async function addProduct() {
+    const res = await fetch('/api/products', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newProduct)
+    });
+    if (res.ok) {
+      await fetchProducts();
+      message = 'Product added!';
+      // Reset form
+      newProduct = {
+        name: '',
+        description: '',
+        price: 0,
+        stock_quantity: 0,
+        category_id: null,
+        brand_id: null,
+        is_active: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
+    } else {
+      message = 'Failed to add product';
+    }
+  }
+
+  async function removeProduct(product_id: number) {
+    const res = await fetch(`/api/products/${product_id}`, {
+      method: 'DELETE'
+    });
+    if (res.ok) {
+      await fetchProducts();
+      message = 'Product removed!';
+    } else {
+      message = 'Failed to remove product';
     }
   }
 
@@ -41,12 +90,24 @@
     <Counter />
   </div>
 
+  <h2>Add Product</h2>
+  <form on:submit|preventDefault={addProduct}>
+    <input placeholder="Name" bind:value={newProduct.name} required />
+    <input placeholder="Description" bind:value={newProduct.description} />
+    <input type="number" placeholder="Price" bind:value={newProduct.price} required />
+    <input type="number" placeholder="Stock Quantity" bind:value={newProduct.stock_quantity} />
+    <input type="number" placeholder="Category ID" bind:value={newProduct.category_id} />
+    <input type="number" placeholder="Brand ID" bind:value={newProduct.brand_id} />
+    <button type="submit">Add Product</button>
+  </form>
+
   <h2>Products</h2>
   {#if products.length > 0}
     <ul>
       {#each products as product}
         <li>
           <strong>{product.name}</strong> - {product.description}
+          <button on:click={() => removeProduct(product.product_id)}>Remove</button>
         </li>
       {/each}
     </ul>
@@ -62,21 +123,3 @@
     Click on the Vite and Svelte logos to learn more
   </p>
 </main>
-
-<style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
-  }
-</style>
